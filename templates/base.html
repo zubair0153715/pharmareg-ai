@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}PharmaReg AI — AI-Powered Regulatory Compliance Audits{% endblock %}</title>
+<meta name="description" content="AI-assisted regulatory audits for pharmaceutical manufacturers. Dossier, label and patient-leaflet reviews against SFDA, UAE EDE, FDA and MHRA requirements. Free 2-page sample audit.">
+<meta property="og:title" content="PharmaReg AI — AI-Powered Regulatory Compliance Audits">
+<meta property="og:description" content="AI-assisted audits of pharma dossiers, labels and patient leaflets against SFDA, UAE EDE, FDA and MHRA requirements. Free 2-page sample audit.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ public_url }}/">
+<link rel="stylesheet" href="/static/style.css">
+<style>
+/* Critical mobile-menu styles inline so the menu works even if style.css is cached old */
+#mobileMenu{display:none}
+@media(max-width:860px){
+  #navToggle{display:inline-block !important}
+  #mobileMenu.open{display:flex !important;flex-direction:column;background:#0b2540;border-top:1px solid rgba(255,255,255,.12);padding:8px 20px 14px}
+  #mobileMenu.open a{color:#d7e3f0;text-decoration:none;font-size:1.02rem;padding:10px 4px;border-bottom:1px solid rgba(255,255,255,.07)}
+  #mobileMenu.open a:last-child{border-bottom:none}
+}
+</style>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0e2a47">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "PharmaReg AI",
+  "description": "AI-assisted regulatory compliance audits for pharmaceutical manufacturers: dossier, product label and patient leaflet reviews against Saudi SFDA, UAE EDE, US FDA and UK MHRA requirements.",
+  "url": "{{ public_url }}/",
+  "founder": {"@type": "Person", "name": "Zubair Ahmed", "jobTitle": "Pharm-D"},
+  "areaServed": ["Saudi Arabia", "United Arab Emirates", "United States", "United Kingdom"],
+  "priceRange": "$0 - $5,000",
+  "knowsAbout": ["Saudi SFDA", "UAE EDE", "FDA 21 CFR", "MHRA", "WHO cGMP", "regulatory affairs", "pharmaceutical labeling"]
+}
+</script>
+{% block head_extra %}{% endblock %}
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/"><span class="brand-mark">℞</span> PharmaReg&nbsp;AI</a>
+    <nav class="nav">
+      <a href="/#how">How it works</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/sample-audit">Sample audit</a>
+      <a href="/audit">Free GMP self-audit</a>
+      <a href="/portal">Audit Cloud</a>
+      <a class="btn btn-small" href="/request-audit">Request free audit</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" style="display:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:1.25rem;line-height:1;border-radius:10px;padding:7px 12px;cursor:pointer">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/#how">How it works</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/sample-audit">Sample audit</a>
+    <a href="/audit">Free GMP self-audit</a>
+    <a href="/portal">Audit Cloud</a>
+    <a href="/request-audit" class="btn btn-small">Request free audit</a>
+  </div>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="brand"><span class="brand-mark">℞</span> PharmaReg&nbsp;AI</div>
+      <p class="muted">AI-assisted regulatory compliance audits for pharmaceutical manufacturers.<br>Founded by Zubair Ahmed, Pharm-D.</p>
+    </div>
+    <div>
+      <p class="footer-head">Frameworks covered</p>
+      <p class="muted">Saudi SFDA · UAE EDE · US FDA 21&nbsp;CFR · UK MHRA · WHO cGMP</p>
+    </div>
+    <div>
+      <p class="footer-head">Get started</p>
+      <p><a href="/request-audit">Request a free sample audit</a><br><a href="/sample-audit">See a sample audit</a></p>
+    </div>
+  </div>
+  <div class="wrap disclaimer">
+    <p>PharmaReg AI provides advisory reviews based on publicly available regulatory frameworks. It does not replace legal or regulatory counsel, and the manufacturer retains full responsibility for final submissions to SFDA&nbsp;/ EDE&nbsp;/ FDA&nbsp;/ MHRA.</p>
+    <p class="muted">© 2026 PharmaReg AI. All rights reserved. · <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a> · <a href="/refunds">Refund Policy</a></p>
+  </div>
+</footer>
+<script>
+if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}
+/* Robust mobile menu: toggle on button tap, close on link tap / outside tap / Escape */
+(function(){
+  var btn=document.getElementById('navToggle'), menu=document.getElementById('mobileMenu');
+  if(!btn||!menu) return;
+  function close(){menu.classList.remove('open');btn.setAttribute('aria-expanded','false');}
+  btn.addEventListener('click',function(e){e.stopPropagation();var o=menu.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');});
+  menu.addEventListener('click',function(e){if(e.target.tagName==='A') close();});
+  document.addEventListener('click',function(e){if(menu.classList.contains('open')&&!menu.contains(e.target)) close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape') close();});
+})();
+</script>
+</body>
+</html>

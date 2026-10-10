@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ ch.title }} — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">PharmaReg QMS Lite · Change control</p>
+  <h1>{{ ch.title }}</h1>
+  {% include "_qms_nav.html" %}
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <div class="card">
+    <p><b>Status:</b> {{ ch.status }} · <b>Type:</b> {{ ch.ctype }} · <b>Requested by:</b> {{ ch.requested_by }}</p>
+    <p><b>Description:</b><br>{{ ch.description }}</p>
+    {% if ch.impact %}<p><b>Impact assessment:</b><br>{{ ch.impact }}</p>{% endif %}
+    {% if ch.decision %}<p><b>Decision note:</b><br>{{ ch.decision }}</p>{% endif %}
+  </div>
+  <div class="card" style="margin-top:16px">
+    <p class="card-title">Workflow</p>
+    <div class="cta-row">
+      {% if ch.status == "requested" %}
+      <form method="post" action="/portal/qms/changes/{{ ch.id }}/assess" style="display:flex;gap:8px;flex:1">
+        <input name="impact" placeholder="Impact assessment" maxlength="2000" style="flex:1;padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+        <button class="btn btn-primary btn-small" type="submit">Start assessment</button>
+      </form>
+      {% endif %}
+      {% if ch.status == "assessing" %}
+      <form method="post" action="/portal/qms/changes/{{ ch.id }}/approve" style="display:flex;gap:8px;align-items:center">
+        <input type="password" name="password" placeholder="Password (e-sign)" required style="padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+        <button class="btn btn-primary btn-small" type="submit">Approve</button>
+      </form>
+      <form method="post" action="/portal/qms/changes/{{ ch.id }}/reject" style="display:flex;gap:8px;align-items:center">
+        <input name="decision" placeholder="Rejection reason" style="padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+        <button class="btn btn-ghost btn-small" type="submit">Reject</button>
+      </form>
+      {% endif %}
+      {% if ch.status == "approved" %}
+      <form method="post" action="/portal/qms/changes/{{ ch.id }}/implement"><button class="btn btn-primary btn-small" type="submit">Mark implementing</button></form>
+      {% endif %}
+      {% if ch.status == "implementing" %}
+      <form method="post" action="/portal/qms/changes/{{ ch.id }}/close" style="display:flex;gap:8px;align-items:center">
+        <input type="password" name="password" placeholder="Password (e-sign)" required style="padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+        <button class="btn btn-primary btn-small" type="submit">Close change</button>
+      </form>
+      {% endif %}
+      {% if ch.status in ("closed","rejected") %}
+      <p class="muted">This change is {{ ch.status }}. No further actions.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}{{ doc.title }} — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">PharmaReg QMS Lite · Document</p>
+  <h1>{{ doc.title }}</h1>
+  {% include "_qms_nav.html" %}
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+
+  <!-- Visual workflow stepper -->
+  <div class="stepper">
+    <div class="step-dot{% if doc.status == 'draft' %} active{% elif doc.status in ('in_review','effective') %} done{% endif %}">
+      <span class="dot">1</span><span class="lbl">Draft</span>
+    </div>
+    <div class="step-line{% if doc.status in ('in_review','effective') %} done{% endif %}"></div>
+    <div class="step-dot{% if doc.status == 'in_review' %} active{% elif doc.status == 'effective' %} done{% endif %}">
+      <span class="dot">2</span><span class="lbl">In review</span>
+    </div>
+    <div class="step-line{% if doc.status == 'effective' %} done{% endif %}"></div>
+    <div class="step-dot{% if doc.status == 'effective' %} active{% endif %}">
+      <span class="dot">3</span><span class="lbl">Effective</span>
+    </div>
+    {% if doc.status == 'obsolete' %}
+    <div class="step-line done"></div>
+    <div class="step-dot active obsolete"><span class="dot">✕</span><span class="lbl">Obsolete</span></div>
+    {% endif %}
+  </div>
+
+  {% if doc.status == 'in_review' %}
+  <div class="notice notice-review">
+    <b>🔍 In review — waiting for your approval below.</b><br>
+    <span class="muted">This document was sent to the reviewer. In this workspace <b>you</b> are the reviewer: approve it with your e-signature, or send it back to draft.</span>
+  </div>
+  {% endif %}
+  {% if doc.status == 'draft' and not doc.versions %}
+  <div class="notice notice-warn">
+    <b>⬆️ One step missing:</b> <span class="muted">attach the document file first (below) — a document needs at least one version before it can go for review.</span>
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <p><b>Type:</b> {{ doc.type }} · <b>Status:</b> <span class="sev sev-{% if doc.status=='effective' %}minor{% elif doc.status=='in_review' %}major{% elif doc.status=='obsolete' %}critical{% else %}minor{% endif %}">{{ doc.status.replace("_"," ") }}</span> · <b>Current:</b> v{{ doc.current_v }}</p>
+    <h3>Versions</h3>
+    {% if doc.versions %}
+    <table class="def-table">
+      <tr><th>Ver</th><th>File</th><th>By</th><th>At</th><th>Note</th><th></th></tr>
+      {% for v in doc.versions|reverse %}
+      <tr><td>v{{ v.v }}</td><td>{{ v.filename }}</td><td>{{ v.by }}</td><td>{{ v.at[:10] }}</td><td>{{ v.note }}</td>
+      <td><a href="/portal/qms/files/{{ doc.id }}/{{ v.v }}">Download</a></td></tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <p class="muted">No file attached yet. Use the upload form at the bottom of this page.</p>
+    {% endif %}
+    {% if doc.approvals %}
+    <h3>E-signatures</h3>
+    <table class="def-table">
+      <tr><th>By</th><th>At</th><th>Meaning</th><th>Version</th></tr>
+      {% for a in doc.approvals %}
+      <tr><td>{{ a.by }} ({{ a.email }})</td><td>{{ a.at[:16].replace("T"," ") }}</td><td>{{ a.meaning }}</td><td>v{{ a.version }}</td></tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </div>
+
+  <div class="card no-print" style="margin-top:16px">
+    <p class="card-title">What would you like to do?</p>
+    <div class="workflow">
+      {% if doc.status == "draft" and doc.versions %}
+      <div class="wf-step">
+        <p class="wf-title">Step 2: Send to reviewer</p>
+        <p class="muted small">The document leaves draft and waits for review. Nothing is sent by email — the reviewer approves it right here.</p>
+        <form method="post" action="/portal/qms/docs/{{ doc.id }}/submit"><button class="btn btn-primary btn-small" type="submit">📤 Send to reviewer</button></form>
+      </div>
+      {% endif %}
+      {% if doc.status == "in_review" %}
+      <div class="wf-step">
+        <p class="wf-title">Step 3: Approve with your e-signature</p>
+        <p class="muted small">Enter <b>your own portal password</b> to approve — you are the reviewer in this workspace. Your name, email and time are recorded as a tamper-evident e-signature.</p>
+        <form method="post" action="/portal/qms/docs/{{ doc.id }}/approve" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input type="password" name="password" placeholder="Your portal password" required style="padding:10px;border:1px solid #d7e0ea;border-radius:8px;min-width:200px">
+          <button class="btn btn-primary btn-small" type="submit">✅ Approve &amp; make effective</button>
+        </form>
+      </div>
+      <div class="wf-step">
+        <p class="wf-title">Not ready? Send it back</p>
+        <p class="muted small">Rejects the document to draft so it can be fixed and re-uploaded.</p>
+        <form method="post" action="/portal/qms/docs/{{ doc.id }}/reject" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input name="reason" placeholder="Why is it being sent back? (optional)" style="padding:10px;border:1px solid #d7e0ea;border-radius:8px;min-width:200px">
+          <button class="btn btn-ghost btn-small" type="submit">↩ Reject to draft</button>
+        </form>
+      </div>
+      {% endif %}
+      {% if doc.status == "effective" %}
+      <div class="wf-step">
+        <p class="wf-title">This document is effective ✅</p>
+        <p class="muted small">It is the current controlled version. Uploading a new version sends it back to draft for re-approval.</p>
+      </div>
+      {% endif %}
+      {% if doc.status in ("effective", "draft") and doc.versions %}
+      <div class="wf-step">
+        <p class="wf-title">Retire this document</p>
+        <p class="muted small">Marks it obsolete. Requires your e-signature.</p>
+        <form method="post" action="/portal/qms/docs/{{ doc.id }}/obsolete" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input type="password" name="password" placeholder="Your portal password" required style="padding:10px;border:1px solid #d7e0ea;border-radius:8px;min-width:200px">
+          <button class="btn btn-ghost btn-small" type="submit">Mark obsolete</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:18px">
+      <p class="card-title">⬆️ Upload a file version <span class="muted" style="font-weight:400">(new version resets the document to draft)</span></p>
+      <form method="post" action="/portal/qms/docs/{{ doc.id }}/new-version" enctype="multipart/form-data" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input type="file" name="file" required>
+        <input name="note" placeholder="What changed in this version?" maxlength="300" style="padding:10px;border:1px solid #d7e0ea;border-radius:8px;min-width:200px">
+        <button class="btn btn-ghost btn-small" type="submit">Upload v{{ doc.current_v + 1 }}</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

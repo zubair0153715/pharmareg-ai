@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Admin — PharmaReg AI{% endblock %}
+{% block content %}
+<div class="wrap">
+  <h1>Portal admin</h1>
+  <p class="muted">{{ users|length }} users · {{ audits|length }} audits. Unlisted — do not share this URL.</p>
+  <div class="cta-row" style="margin-bottom:16px"><a class="btn btn-primary btn-small" href="/portal/admin/fixes">Remediation queue</a></div>
+  <h2>Users</h2>
+  <table class="def-table">
+    <tr><th>Name</th><th>Email</th><th>Company</th><th>Plan</th><th>Active</th><th>Created</th><th></th></tr>
+    {% for uid, u in users.items() %}
+    <tr>
+      <td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ u.company or "—" }}</td>
+      <td>
+        <form method="post" action="/portal/admin/plan" style="display:inline">
+          <input type="hidden" name="uid" value="{{ uid }}">
+          <select name="plan" onchange="this.form.submit()">
+            {% for pid, p in plans.items() %}
+            <option value="{{ pid }}" {% if u.plan == pid %}selected{% endif %}>{{ p.name }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </td>
+      <td>{{ "yes" if u.active else "no" }}</td>
+      <td>{{ u.created[:10] }}</td>
+      <td>
+        <form method="post" action="/portal/admin/toggle" style="display:inline">
+          <input type="hidden" name="uid" value="{{ uid }}">
+          <button class="btn btn-ghost btn-small" type="submit">{{ "Deactivate" if u.active else "Activate" }}</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2 style="margin-top:30px">Recent audits</h2>
+  <table class="def-table">
+    <tr><th>Date</th><th>User</th><th>Framework</th><th>Facility</th><th>Score</th><th>Grade</th></tr>
+    {% for aid, a in audits.items()|sort(attribute="1.ts", reverse=True) %}
+    {% if loop.index <= 30 %}
+    <tr>
+      <td>{{ a.ts[:10] }}</td><td>{{ users.get(a.uid, {}).get("email", "?") }}</td>
+      <td>{{ a.report.framework_meta.flag }} {{ a.report.framework_meta.name }}</td>
+      <td>{{ a.company.company or "—" }}</td><td><b>{{ a.report.overall }}%</b></td><td>{{ a.report.grade_label }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Log in — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">PharmaReg Audit Cloud</p>
+  <h1>Log in</h1>
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <form class="form" method="post" action="/portal/login">
+    <label>Email *<input type="email" name="email" required maxlength="160"></label>
+    <label>Password *<input type="password" name="password" required></label>
+    <div class="cta-row"><button class="btn btn-primary btn-block" type="submit">Log in</button></div>
+  </form>
+  <p class="muted center">No account? <a href="/portal/signup">Create one free</a></p>
+</div>
+{% endblock %}

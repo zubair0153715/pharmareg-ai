@@ -1,0 +1,24 @@
+<style>
+.score-wrap { display:flex; gap:24px; align-items:center; flex-wrap:wrap; margin:18px 0; }
+.score-big { font-size:64px; font-weight:800; line-height:1; }
+.grade { font-size:15px; font-weight:800; padding:6px 16px; border-radius:24px; color:#fff; }
+.grade-green { background:#15803d; } .grade-lime { background:#65a30d; }
+.grade-amber { background:#d97706; } .grade-red { background:#dc2626; }
+.dbar { margin:8px 0; }
+.dbar .lbl { display:flex; justify-content:space-between; font-size:14px; margin-bottom:3px; }
+.dbar .track { height:10px; background:#e5e7eb; border-radius:6px; overflow:hidden; }
+.dbar .fill { height:100%; border-radius:6px; }
+.finding { border-left:4px solid #ccc; background:#fff; border-radius:8px; padding:12px 14px; margin:10px 0; }
+.finding.critical { border-color:#dc2626; } .finding.major { border-color:#d97706; } .finding.minor { border-color:#0284c7; }
+.finding .fh { display:flex; gap:10px; align-items:center; margin-bottom:6px; flex-wrap:wrap; }
+.finding .rec { background:#f8fafc; border-radius:6px; padding:8px 10px; margin-top:8px; font-size:14px; }
+.kv { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin:14px 0; }
+.kv div { background:#f8fafc; border-radius:8px; padding:10px 12px; }
+.kv .k { font-size:12px; color:#64748b; text-transform:uppercase; letter-spacing:.5px; }
+.kv .v { font-weight:700; }
+.fw-badge { display:inline-block; font-size:14px; font-weight:700; background:#eef2ff; color:#3730a3; padding:4px 12px; border-radius:20px; margin-bottom:6px; }
+@media print {
+  .site-header, .site-footer, .no-print { display:none !important; }
+  body { font-size:12px; }
+}
+</style>

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}eCTD Readiness Report {{ report_id }} — PharmaReg AI{% endblock %}
+{% block head_extra %}
+<style>
+.st { font-size:11px; font-weight:700; padding:2px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:.5px; }
+.st-PASS { background:#dcfce7; color:#166534; }
+.st-FAIL { background:#fee2e2; color:#b91c1c; }
+.st-WARNING { background:#fef3c7; color:#b45309; }
+.rule { border:1px solid #e5e7eb; border-radius:10px; padding:10px 14px; margin:8px 0; background:#fff; }
+.rule p { margin:4px 0; }
+.grade { text-align:center; padding:22px; border-radius:14px; margin:18px 0; }
+.grade h2 { margin:0 0 4px; font-size:40px; }
+.g-ready { background:#dcfce7; } .g-polish { background:#fef3c7; }
+.g-fixes { background:#ffedd5; } .g-notready { background:#fee2e2; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">Free eCTD PDF readiness check · {{ report_date }}</p>
+  <h1>Readiness Report</h1>
+  <p class="muted">{{ filename }} · {{ company.company or "—" }} · Report {{ report_id }}</p>
+  <div class="grade {% if summary.label == 'eCTD-READY' %}g-ready{% elif summary.label == 'NEEDS POLISH' %}g-polish{% elif summary.label == 'NEEDS FIXES' %}g-fixes{% else %}g-notready{% endif %}">
+    <h2>{{ summary.grade }}/100</h2>
+    <p><strong>{{ summary.label }}</strong> — {{ summary.fails }} failed · {{ summary.warnings }} warnings</p>
+  </div>
+  {% for r in results %}
+  <div class="rule">
+    <p><span class="st st-{{ r.status }}">{{ r.status }}</span> <strong>{{ r.rule_id }} — {{ r.name }}</strong></p>
+    <p class="muted">{{ r.detail }}</p>
+  </div>
+  {% endfor %}
+  <div class="card" style="margin-top:22px">
+    <p class="card-title">Want every finding fixed before submission?</p>
+    <p class="muted">Our professional audit covers the full DRAP / SFDA / EDE frameworks — not just the PDF. Message us on WhatsApp with your report ID.</p>
+    <p><a class="btn" href="{{ wa_link }}" target="_blank" rel="noopener">Discuss on WhatsApp</a></p>
+  </div>
+  <p class="muted small">Screening tool only — checks file-level eCTD PDF criteria, not submission content. Always verify against current FDA guidance with your regulatory publisher.</p>
+</div>
+{% endblock %}

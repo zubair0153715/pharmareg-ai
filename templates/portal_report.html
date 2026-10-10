@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Gap Analysis Report {{ report_id }} — PharmaReg Audit Cloud{% endblock %}
+{% block head_extra %}{% include "_report_assets.html" %}{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  {% include "_report_body.html" %}
+  <div class="card no-print" style="margin-top:26px">
+    {% if owner %}
+    <p class="card-title">Report actions</p>
+    {% if share_url %}
+    <p class="card-title">🔗 Share this report</p>
+    <p class="muted small">Anyone with the link can view this report — no login needed. Perfect for sharing with your consultant, QA head, or management.</p>
+    <p><input id="share-link" readonly value="{{ share_url }}" style="width:100%; padding:10px; border:1px solid #d7e0ea; border-radius:8px" onclick="this.select()"></p>
+    {% else %}
+    <div class="upsell">
+      <p class="card-title">🔗 Shareable report links — Professional</p>
+      <p class="muted small">Send this report to your consultant, QA head, or management with one link — no login needed on their side. Available on the <b>Professional ($49/month)</b> plan.</p>
+      <div class="cta-row"><a class="btn btn-primary btn-small" href="/portal/upgrade">⬆ Upgrade to share</a></div>
+    </div>
+    {% endif %}
+    <div class="cta-row">
+      <button class="btn btn-ghost btn-small" onclick="window.print()">🖨 Print / Save PDF</button>
+      <a class="btn btn-ghost btn-small" href="/portal/dashboard">← Dashboard</a>
+      <form method="post" action="/portal/audit/{{ aid }}/delete" style="display:inline" onsubmit="return confirm('Delete this audit?')">
+        <button class="btn btn-ghost btn-small" type="submit">Delete</button>
+      </form>
+    </div>
+    {% else %}
+    <p class="muted">Shared via <a href="/portal">PharmaReg Audit Cloud</a> — GMP self-audits for DRAP 🇵🇰, SFDA 🇸🇦 and EDE 🇦🇪.</p>
+    <div class="cta-row">
+      <button class="btn btn-ghost btn-small" onclick="window.print()">🖨 Print / Save PDF</button>
+      <a class="btn btn-primary btn-small" href="/portal/signup">Run your own free audit</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

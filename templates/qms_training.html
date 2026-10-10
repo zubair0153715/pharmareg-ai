@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Training — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg QMS Lite</p>
+  <h1>🎓 Training Records</h1>
+  <p class="lead muted" style="font-size:1rem">Prove your team is qualified: add staff, assign training on each document, and track who completed what — inspectors always ask for this.</p>
+  {% include "_qms_nav.html" %}
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <div class="cards">
+    <div class="card">
+      <p class="card-title">Add staff member</p>
+      <form class="form" method="post" action="/portal/qms/staff/new">
+        <label>Name *<input name="name" required maxlength="120"></label>
+        <div class="form-row">
+          <label>Role<input name="role" maxlength="80" placeholder="e.g. QC Analyst"></label>
+          <label>Email<input type="email" name="email" maxlength="120"></label>
+        </div>
+        <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Add</button></div>
+      </form>
+    </div>
+    <div class="card">
+      <p class="card-title">Assign training</p>
+      <form class="form" method="post" action="/portal/qms/training/assign">
+        <label>Staff<select name="staff_id">{% for s in staff %}<option value="{{ s.id }}">{{ s.name }} ({{ s.role or "—" }})</option>{% endfor %}</select></label>
+        <label>Document (effective only)<select name="doc_id">{% for did, d in docs.items() %}<option value="{{ did }}">{{ d.title }} v{{ d.current_v }}</option>{% endfor %}</select></label>
+        <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Assign</button></div>
+      </form>
+    </div>
+  </div>
+  <h2 style="margin-top:24px">Training matrix</h2>
+  <table class="def-table">
+    <tr><th>Staff</th><th>Document</th><th>Ver</th><th>Assigned</th><th>Completed</th><th>E-sign</th><th></th></tr>
+    {% for t in trs %}
+    <tr>
+      <td>{{ t.staff_name }}</td><td>{{ t.doc_title }}</td><td>v{{ t.version }}</td>
+      <td>{{ t.assigned_at }}</td>
+      <td>{% if t.completed_at %}✅ {{ t.completed_at[:10] }}{% else %}<b style="color:#d97706">pending</b>{% endif %}</td>
+      <td>{{ t.esign.by if t.esign else "—" }}</td>
+      <td>{% if not t.completed_at %}
+        <form method="post" action="/portal/qms/training/{{ t.id }}/complete" style="display:flex;gap:6px">
+          <input type="password" name="password" placeholder="Password (e-sign)" required style="padding:6px;border:1px solid #e5e7eb;border-radius:8px">
+          <button class="btn btn-ghost btn-small" type="submit">Complete</button>
+        </form>{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="muted">No trainings assigned.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

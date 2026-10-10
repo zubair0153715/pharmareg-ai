@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}CAPA — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg QMS Lite</p>
+  <h1>🔧 CAPA</h1>
+  <p class="lead muted" style="font-size:1rem">Corrective and Preventive Actions: fix what went wrong, stop it happening again, and verify the fix worked — with effectiveness checks and due dates.</p>
+  {% include "_qms_nav.html" %}
+  <div class="card">
+    <p class="card-title">New CAPA</p>
+    <form class="form" method="post" action="/portal/qms/capas/new">
+      <div class="form-row">
+        <label>Title *<input name="title" required maxlength="160"></label>
+        <label>Owner<input name="owner" maxlength="120"></label>
+      </div>
+      <div class="form-row">
+        <label>Source<select name="source"><option value="manual">Manual</option><option value="deviation">Deviation</option><option value="audit">Audit finding</option><option value="complaint">Complaint</option></select></label>
+        <label>Due date<input type="date" name="due"></label>
+      </div>
+      <label>Description<textarea name="description" rows="2" maxlength="2000" style="width:100%"></textarea></label>
+      <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Create CAPA</button></div>
+    </form>
+  </div>
+  <table class="def-table" style="margin-top:18px">
+    <tr><th>Title</th><th>Source</th><th>Owner</th><th>Due</th><th>Status</th><th>Actions</th><th></th></tr>
+    {% for c in capas %}
+    <tr>
+      <td>{{ c.title }}</td><td>{{ c.source }}</td><td>{{ c.owner }}</td><td>{{ c.due or "—" }}</td>
+      <td>{{ c.status.replace("_"," ") }}</td>
+      <td>{{ c.actions|selectattr("done")|list|length }}/{{ c.actions|length }}</td>
+      <td><a href="/portal/qms/capas/{{ c.id }}">Open</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="muted">No CAPAs.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

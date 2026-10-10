@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Fix queue — Admin{% endblock %}
+{% block content %}
+<div class="wrap">
+  <h1>Remediation queue</h1>
+  <p class="muted">{{ open_fixes|length }} open · {{ fixes|length }} total. Unlisted — do not share this URL.</p>
+  <div class="cta-row" style="margin-bottom:16px"><a class="btn btn-ghost btn-small" href="/portal/admin">Back to admin</a></div>
+  <table class="def-table">
+    <tr><th>Date</th><th>Client</th><th>Company</th><th>Audit</th><th>Finding</th><th>Status</th><th></th></tr>
+    {% for f in fixes %}
+    <tr>
+      <td>{{ f.created[:10] }}</td>
+      <td>{{ f.user_name }}<br><span class="muted">{{ f.user_email }}</span></td>
+      <td>{{ f.company or "—" }}</td>
+      <td>{{ f.audit_report_id or "—" }}</td>
+      <td>{{ f.finding[:50] }}{% if f.finding|length > 50 %}…{% endif %}</td>
+      <td><b>{{ status_labels.get(f.status, f.status) }}</b></td>
+      <td><a href="/portal/admin/fix/{{ f.id }}">Open</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% if not fixes %}<div class="card"><p class="muted">No fix requests yet.</p></div>{% endif %}
+</div>
+{% endblock %}

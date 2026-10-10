@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}QMS Lite — Lightweight eQMS for Pharma | PharmaReg Audit Cloud{% endblock %}
+{% block head_extra %}
+<meta name="description" content="QMS Lite: document control with e-signatures, deviation investigation, CAPA, change control, training records and a tamper-evident audit trail — built for pharma teams that need GMP discipline without a $25k/year enterprise platform.">
+<meta property="og:title" content="QMS Lite — Lightweight eQMS for Pharma">
+<meta property="og:description" content="Document control, deviations, CAPA, change control, training records and audit trail — from $49/month.">
+<meta property="og:url" content="https://pharmareg-ai.fastapicloud.dev/qms">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"PharmaReg QMS Lite",
+ "applicationCategory":"BusinessApplication","operatingSystem":"Web",
+ "description":"Lightweight electronic Quality Management System for pharmaceutical manufacturers: document control, deviations, CAPA, change control, training records, audit trail.",
+ "offers":[{"@type":"Offer","price":"49","priceCurrency":"USD"},{"@type":"Offer","price":"199","priceCurrency":"USD"}]}
+</script>
+{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg Audit Cloud · Professional &amp; Enterprise</p>
+  <h1>QMS Lite — the eQMS without the enterprise price tag</h1>
+  <p class="lede">Veeva and MasterControl start around <b>$25,000/year</b> and take months to implement. QMS Lite gives your QA team the six modules inspectors actually ask about — from <b>$49/month</b>, live today, no IT project required.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="/portal/signup">Start free — upgrade for QMS</a>
+    <a class="btn btn-ghost" href="/portal">See the portal</a>
+  </div>
+
+  <div class="cards" style="margin-top:28px">
+    <div class="card"><p class="card-title">📄 Document control</p><p class="muted">Versioned SOPs &amp; policies. Draft → review → effective → obsolete, with password e-signatures on every approval.</p></div>
+    <div class="card"><p class="card-title">⚠️ Deviations</p><p class="muted">Raise, investigate, record root cause, link a CAPA, close with e-signature.</p></div>
+    <div class="card"><p class="card-title">🔧 CAPA</p><p class="muted">Corrective &amp; preventive actions with owners, due dates, checklists and effectiveness verification.</p></div>
+    <div class="card"><p class="card-title">🔀 Change control</p><p class="muted">Impact assessment → QA approval → implementation → closure. Nothing changes without a record.</p></div>
+    <div class="card"><p class="card-title">🎓 Training records</p><p class="muted">Assign effective SOPs to staff, track completion in a training matrix, e-signed.</p></div>
+    <div class="card"><p class="card-title">⛓️ Audit trail</p><p class="muted">Every action written to a tamper-evident, hash-chained log — who did what, when.</p></div>
+  </div>
+
+  <h2>Who is it for?</h2>
+  <ul>
+    <li><b>Pakistani manufacturers</b> preparing for DRAP inspections</li>
+    <li><b>Gulf exporters</b> aligning with SFDA / EDE expectations</li>
+    <li>QA teams of 5–50 people who need discipline, not a six-figure IT project</li>
+  </ul>
+
+  <h2>Honest scope</h2>
+  <p class="muted">QMS Lite covers the functional modules of an eQMS. It is <b>not</b> a validated 21 CFR Part 11 system and does not replace a full enterprise QMS for FDA-regulated sites. For DRAP / SFDA / EDE-facing operations it provides the document discipline inspectors look for — and pairs with our <a href="/audit">free GMP self-audit</a> and $800–1,200 expert audit service.</p>
+
+  <div class="card" style="margin-top:24px">
+    <p class="card-title">Pricing</p>
+    <p class="muted"><b>Professional $49/mo</b> — unlimited GMP audits, shareable reports, full QMS Lite · <b>Enterprise $199/mo</b> — 5 team seats, multi-facility tracking. Billing is manual via WhatsApp — no card required.</p>
+    <div class="cta-row"><a class="btn btn-primary" href="/portal/signup">Create free account</a></div>
+  </div>
+</div>
+{% endblock %}

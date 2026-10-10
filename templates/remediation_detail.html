@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Fix request — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg Audit Cloud</p>
+  <h1>Fix request</h1>
+  <div class="card">
+    <p><b>Status:</b> {{ status_labels.get(fix.status, fix.status) }}</p>
+    <p><b>Submitted:</b> {{ fix.created[:16].replace("T", " ") }} UTC</p>
+    {% if fix.audit_report_id %}<p><b>Audit:</b> {{ fix.audit_report_id }}</p>{% endif %}
+    <p><b>Finding:</b><br>{{ fix.finding }}</p>
+    {% if fix.fix_notes %}<p><b>Your notes:</b><br>{{ fix.fix_notes }}</p>{% endif %}
+    <p><b>Your document:</b>
+      <a href="/portal/remediation/files/{{ fix.id }}/original">{{ fix.original_filename }}</a></p>
+    {% if fix.status in ["ready", "downloaded"] and fix.fixed_filename %}
+    <div class="card" style="border-color:#27ae60">
+      <p><b>✅ Corrected document ready</b></p>
+      <p class="muted">AI-assisted draft, reviewed and approved by our regulatory specialist.</p>
+      {% if fix.specialist_note %}<p><b>What was changed:</b><br>{{ fix.specialist_note }}</p>{% endif %}
+      <div class="cta-row"><a class="btn btn-primary" href="/portal/remediation/files/{{ fix.id }}/fixed">Download corrected document</a></div>
+    </div>
+    {% else %}
+    <p class="muted">An AI-assisted draft is being prepared and will be reviewed by our regulatory specialist. You will see the corrected document here when it is ready.</p>
+    {% endif %}
+    <div class="cta-row"><a class="btn btn-ghost btn-small" href="/portal/remediation">Back to fixes</a></div>
+  </div>
+</div>
+{% endblock %}

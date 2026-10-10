@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Sample audit — PharmaReg AI{% endblock %}
+{% block content %}
+
+<section class="section">
+  <div class="wrap narrow">
+    <div class="report-head">
+      <div>
+        <p class="kicker">Example deliverable</p>
+        <h1>Free 2-page sample audit</h1>
+        <p class="muted">This is an illustrative example of the format. Your free audit is produced on <strong>your own document</strong> — one product label, patient leaflet, or dossier section — and delivered within 48 hours.</p>
+      </div>
+      <a class="btn btn-ghost" href="/sample-audit?download=1">Download this page</a>
+    </div>
+
+    <div class="report">
+      <div class="report-brand"><span class="brand-mark">℞</span> PharmaReg AI <span class="muted">· Confidential</span></div>
+
+      <h2>1. Document reviewed <span class="muted small">(example)</span></h2>
+      <table class="def-table">
+        <tr><th>Product</th><td>Example: Metformin 500&nbsp;mg film-coated tablets</td></tr>
+        <tr><th>Document type</th><td>Product label (outer carton + container)</td></tr>
+        <tr><th>Target market</th><td>Saudi Arabia — SFDA</td></tr>
+      </table>
+
+      <h2>2. Verdict</h2>
+      <p class="verdict warn">⚠️ Minor deficiencies — 6 issues found, all fixable pre-submission.</p>
+
+      <h2>3. Deficiency table</h2>
+      <table class="def-table">
+        <thead><tr><th>#</th><th>Section</th><th>Finding</th><th>Why it matters</th><th>Severity</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Storage conditions</td><td>"Store at room temperature" — no explicit temperature/humidity bounds.</td><td>Reviewers expect explicit stability storage statements tied to stability data; vague claims draw queries. <em>SFDA labeling requirements.</em></td><td><span class="sev high">High</span></td></tr>
+          <tr><td>2</td><td>Warnings</td><td>Boxed warning present but wording differs from the reference product.</td><td>Assessors check generic labeling against the originator line-by-line. <em>SFDA labeling requirements.</em></td><td><span class="sev high">High</span></td></tr>
+          <tr><td>3</td><td>Excipients</td><td>Lactose content not declared in warnings.</td><td>Patient-safety labeling; routinely flagged across regulators.</td><td><span class="sev med">Medium</span></td></tr>
+          <tr><td>4</td><td>Dosage &amp; administration</td><td>Maximum daily dose stated without the titration schedule from the reference label.</td><td>Incomplete dosing information triggers assessment questions.</td><td><span class="sev med">Medium</span></td></tr>
+          <tr><td>5</td><td>Patient leaflet readability</td><td>Two sentences exceed recommended readability length for patient sections.</td><td>PIL readability expectations; long sentences fail user-testing norms.</td><td><span class="sev low">Low</span></td></tr>
+          <tr><td>6</td><td>Manufacturer details</td><td>Marketing authorization holder address incomplete (no P.O. box).</td><td>Administrative deficiency; easy fix, commonly queried.</td><td><span class="sev low">Low</span></td></tr>
+        </tbody>
+      </table>
+
+      <h2>4. Corrected excerpts (top findings)</h2>
+      <div class="finding">
+        <p class="finding-before"><span class="tag tag-before">Before</span> "Store at room temperature."</p>
+        <p class="finding-after"><span class="tag tag-after">After</span> "Store at 25&nbsp;°C&nbsp;±&nbsp;2&nbsp;°C / 60%&nbsp;±&nbsp;5% RH. Excursions permitted to 15–30&nbsp;°C. Do not freeze." <span class="muted small">(adapt to the product's actual stability data and climatic zone)</span></p>
+      </div>
+      <div class="finding">
+        <p class="finding-before"><span class="tag tag-before">Before</span> Boxed warning paraphrased from the reference product.</p>
+        <p class="finding-after"><span class="tag tag-after">After</span> Boxed warning carried over verbatim from the reference/originator labeling, with identical prominence and placement.</p>
+      </div>
+
+      <h2>5. What a full audit adds</h2>
+      <ul>
+        <li>Complete dossier, full label set, or entire patient leaflet review</li>
+        <li>Corrected, submission-ready draft of the entire document</li>
+        <li>Cross-check against reference/originator labeling</li>
+        <li>One revision round included · 3–5 business day turnaround · fixed quote upfront</li>
+      </ul>
+
+      <p class="disclaimer small">Advisory review based on publicly available regulatory frameworks. It does not replace legal or regulatory counsel; the manufacturer retains full responsibility for final submissions.</p>
+    </div>
+
+    <div class="center cta-row">
+      <a class="btn btn-primary" href="/request-audit">Get this on your own document — free</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

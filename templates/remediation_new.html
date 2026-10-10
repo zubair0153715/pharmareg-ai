@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}New fix request — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg Audit Cloud</p>
+  <h1>New fix request</h1>
+  {% if error %}<div class="card" style="border-color:#c0392b"><p><b>{{ error }}</b></p></div>{% endif %}
+  {% if not eligible %}
+  <div class="card">
+    <p><b>{{ reason }}</b></p>
+    <div class="cta-row"><a class="btn btn-primary btn-small" href="/portal/upgrade">Upgrade to Professional</a>
+    <a class="btn btn-ghost btn-small" href="/portal/remediation">Back</a></div>
+  </div>
+  {% else %}
+  <form method="post" action="/portal/remediation/new" enctype="multipart/form-data">
+    <div class="card">
+      <p><label><b>Link to audit (optional)</b><br>
+      <select name="audit_id" style="max-width:100%">
+        <option value="">— no specific audit —</option>
+        {% for a in audits %}
+        <option value="{{ a.id }}">{{ a.report_id }} · {{ a.report.framework_meta.flag }} {{ a.report.framework_meta.name }} · {{ a.report.overall }}% · {{ a.ts[:10] }}</option>
+        {% endfor %}
+      </select></label></p>
+      <p><label><b>Which finding should be fixed? *</b><br>
+      <textarea name="finding" rows="4" style="width:100%" required
+        placeholder="e.g. Finding #3 — SOP-QA-014 missing deviation handling section; DRAP expects…"></textarea></label></p>
+      <p><label><b>Faulty document *</b> <span class="muted">(PDF, DOCX, DOC, TXT — max 15 MB)</span><br>
+      <input type="file" name="file" accept=".pdf,.docx,.doc,.txt" required></label></p>
+      <p><label><b>Anything else the specialist should know?</b><br>
+      <textarea name="fix_notes" rows="3" style="width:100%"
+        placeholder="Optional context, deadlines, format preferences…"></textarea></label></p>
+      <p class="muted">An AI-assisted draft is prepared instantly, then reviewed and approved by
+      our regulatory specialist before delivery. Turnaround is typically 3–5 business days.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" type="submit">Submit fix request</button>
+        <a class="btn btn-ghost" href="/portal/remediation">Cancel</a>
+      </div>
+    </div>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+[project]
+name = "pharmareg-ai-site"
+version = "1.0.0"
+description = "PharmaReg AI marketing + lead capture website"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[standard]>=0.115",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+    "pypdf>=4.0",
+    "pdfplumber>=0.11",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.fastapi-cloud]
+# App entrypoint auto-detected as app/main.py:app

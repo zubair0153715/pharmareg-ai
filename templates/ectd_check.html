@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Free eCTD PDF Readiness Check — PharmaReg AI{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">Free tool · 30 seconds</p>
+  <h1>eCTD PDF Readiness Check</h1>
+  <p class="lead">Upload a regulatory PDF and get an instant 12-point check against FDA eCTD requirements — file naming, PDF version, fonts, encryption, JavaScript, page size, searchable text and more. Free, confidential, nothing stored beyond your lead record.</p>
+  <div class="card">
+    <p class="card-title">How it works</p>
+    <p class="muted">1. Upload your PDF → 2. Get an instant readiness grade → 3. Fix what fails, or discuss a full professional compliance audit with us on WhatsApp.</p>
+  </div>
+  <form class="form" method="post" action="/ectd-check/report" enctype="multipart/form-data">
+    <h2>Your details</h2>
+    <div class="form-row">
+      <label>Company name *<input name="company" required maxlength="120"></label>
+      <label>Email<input name="email" type="email" maxlength="120"></label>
+    </div>
+    <h2>PDF file</h2>
+    <div class="form-row">
+      <label>Regulatory PDF (max 15 MB) *<input type="file" name="pdf" accept=".pdf,application/pdf" required></label>
+    </div>
+    <p><button class="btn" type="submit">Run free check</button></p>
+    <p class="muted small">Your file is checked in memory and never published. We keep your company name for follow-up only.</p>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Request a free sample audit — PharmaReg AI{% endblock %}
+{% block content %}
+
+<section class="section">
+  <div class="wrap narrow">
+    <h1 class="center">Request your free sample audit</h1>
+    <p class="center muted">Fill this in — it opens WhatsApp with your request pre-written. Send it, and we'll reply within one business day to arrange the secure document transfer.</p>
+
+    <form id="audit-form" class="form" onsubmit="return sendRequest(event)">
+      <label>Your name
+        <input type="text" id="f-name" required placeholder="e.g. Ahmed Khan" autocomplete="name">
+      </label>
+      <label>Company
+        <input type="text" id="f-company" required placeholder="e.g. Acme Pharmaceuticals" autocomplete="organization">
+      </label>
+      <label>Work email
+        <input type="email" id="f-email" required placeholder="you@company.com" autocomplete="email">
+      </label>
+      <div class="form-row">
+        <label>Target market
+          <select id="f-market" required>
+            <option value="Saudi Arabia (SFDA)">Saudi Arabia (SFDA)</option>
+            <option value="UAE (EDE)">UAE (EDE)</option>
+            <option value="US (FDA)">US (FDA)</option>
+            <option value="UK (MHRA)">UK (MHRA)</option>
+            <option value="Multiple markets">Multiple markets</option>
+            <option value="Not sure yet">Not sure yet</option>
+          </select>
+        </label>
+        <label>Document type
+          <select id="f-doctype" required>
+            <option value="Product label">Product label</option>
+            <option value="Patient Information Leaflet">Patient Information Leaflet</option>
+            <option value="Dossier section">Dossier section</option>
+            <option value="Full dossier">Full dossier (paid audit)</option>
+          </select>
+        </label>
+      </div>
+      <label>Anything we should know? <span class="muted">(optional)</span>
+        <textarea id="f-notes" rows="3" placeholder="Product name, dosage form, timelines…"></textarea>
+      </label>
+      <button class="btn btn-primary btn-block" type="submit">Send request via WhatsApp</button>
+      <p class="muted small center">No account needed. Your details go only into the WhatsApp message you send.</p>
+    </form>
+  </div>
+</section>
+
+<script>
+function sendRequest(e) {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim();
+  const lines = [
+    "Hello PharmaReg AI, I'd like a FREE 2-page sample audit.",
+    "",
+    "Name: " + v("f-name"),
+    "Company: " + v("f-company"),
+    "Email: " + v("f-email"),
+    "Target market: " + v("f-market"),
+    "Document type: " + v("f-doctype"),
+  ];
+  const notes = v("f-notes");
+  if (notes) lines.push("Notes: " + notes);
+  window.open("https://wa.me/{{ whatsapp_number }}?text=" + encodeURIComponent(lines.join("\n")), "_blank");
+  return false;
+}
+</script>
+
+{% endblock %}

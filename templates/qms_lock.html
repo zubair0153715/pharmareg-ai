@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}QMS Lite — Professional feature{% endblock %}
+{% block content %}
+<div class="wrap narrow center" style="padding:48px 20px">
+  <div class="lock-icon">🔒</div>
+  <p class="kicker">Professional plan</p>
+  <h1>QMS Lite is a Professional feature</h1>
+  <p class="lead muted" style="margin:0 auto 8px">A lightweight electronic Quality Management System built for pharma teams — GMP discipline without a $25,000/year enterprise platform.</p>
+  <div class="card" style="text-align:left;margin:28px 0">
+    <p class="card-title">What you unlock with Professional ($49/month)</p>
+    <ul class="check-list">
+      <li><b>📄 Document control</b> — versioned SOPs &amp; policies with password e-signatures and a tamper-evident approval trail.</li>
+      <li><b>⚠️ Deviations &amp; 🔧 CAPA</b> — investigate deviations, assign corrective actions, and verify effectiveness — all linked and traceable.</li>
+      <li><b>🔀 Change control, 🎓 training &amp; 📜 audit trail</b> — manage changes, track who was trained on what, and prove it all to an inspector.</li>
+    </ul>
+  </div>
+  <div class="how-steps">
+    <div class="how-step"><span class="how-n">1</span><p>Tap <b>Upgrade via WhatsApp</b> below</p></div>
+    <div class="how-step"><span class="how-n">2</span><p>We send you <b>bank transfer</b> details</p></div>
+    <div class="how-step"><span class="how-n">3</span><p>Your plan is <b>activated the same day</b></p></div>
+  </div>
+  <p class="muted small" style="margin-top:16px">No card, no auto-charge. Cancel anytime by messaging us.</p>
+  <div class="cta-row" style="justify-content:center">
+    <a class="btn btn-primary" href="{{ wa_link }}" target="_blank" rel="noopener">💬 Upgrade via WhatsApp</a>
+    <a class="btn btn-ghost" href="/portal/dashboard">← Back to dashboard</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Document fixes — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg Audit Cloud</p>
+  <h1>Document fixes</h1>
+  <p class="muted">Upload a faulty document linked to one of your audit findings —
+  you get an AI-assisted draft, reviewed and approved by our regulatory specialist before delivery.</p>
+  {% if error %}<div class="card" style="border-color:#c0392b"><p><b>{{ error }}</b></p></div>{% endif %}
+
+  <div class="cards">
+    <div class="card">
+      <p class="card-title">Fix quota</p>
+      {% if plan.monthly > 0 %}
+      <p><b>Unlimited</b> fixes on your {{ plan.name }} plan.</p>
+      {% else %}
+      <p><b>{{ free_left }}</b> of {{ free_fix_quota }} free {{ "fix" if free_fix_quota == 1 else "fixes" }} remaining.</p>
+      {% if free_left == 0 %}
+      <p class="muted">Your free {{ "fix is" if free_fix_quota == 1 else "fixes are" }} used up — upgrade for unlimited fixes.</p>
+      <div class="cta-row"><a class="btn btn-primary btn-small" href="/portal/upgrade">Upgrade to Professional</a></div>
+      {% endif %}
+      {% endif %}
+      <div class="cta-row">
+        {% if plan.monthly > 0 or (free_left and free_left > 0) %}
+        <a class="btn btn-primary btn-small" href="/portal/remediation/new">+ New fix request</a>
+        {% endif %}
+        <a class="btn btn-ghost btn-small" href="/portal/dashboard">Back to dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:30px">My fix requests</h2>
+  {% if fixes %}
+  <table class="def-table">
+    <tr><th>Date</th><th>Finding</th><th>Document</th><th>Status</th><th></th></tr>
+    {% for f in fixes %}
+    <tr>
+      <td>{{ f.created[:10] }}</td>
+      <td>{{ f.finding[:60] }}{% if f.finding|length > 60 %}…{% endif %}</td>
+      <td>{{ f.original_filename }}</td>
+      <td><b>{{ status_labels.get(f.status, f.status) }}</b></td>
+      <td><a href="/portal/remediation/{{ f.id }}">View</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <div class="card"><p class="muted">No fix requests yet.</p></div>
+  {% endif %}
+</div>
+{% endblock %}

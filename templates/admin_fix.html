@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Fix request — Admin{% endblock %}
+{% block content %}
+<div class="wrap">
+  <h1>Fix request <span class="muted">{{ fix.id }}</span></h1>
+  {% if error %}<div class="card" style="border-color:#c0392b"><p><b>{{ error }}</b></p></div>{% endif %}
+  <div class="card">
+    <p><b>Status:</b> {{ status_labels.get(fix.status, fix.status) }}</p>
+    <p><b>Client:</b> {{ fix.user_name }} ({{ fix.user_email }}) · {{ fix.company or "—" }}</p>
+    <p><b>Submitted:</b> {{ fix.created[:16].replace("T", " ") }} UTC</p>
+    {% if fix.audit_report_id %}<p><b>Audit:</b> {{ fix.audit_report_id }} ({{ fix.audit_framework }})</p>{% endif %}
+    <p><b>Finding:</b><br>{{ fix.finding }}</p>
+    {% if fix.fix_notes %}<p><b>Client notes:</b><br>{{ fix.fix_notes }}</p>{% endif %}
+    <p><b>Original document:</b>
+      <a href="/portal/remediation/files/{{ fix.id }}/original">{{ fix.original_filename }}</a></p>
+    {% if fix.status == "submitted" %}
+    <form method="post" action="/portal/admin/fix/{{ fix.id }}/review" style="display:inline">
+      <button class="btn btn-primary btn-small" type="submit">Mark in review</button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>AI-assisted draft</h2>
+    {% if fix.ai_draft_status == "ready" and fix.ai_draft %}
+    <p class="muted">AI-generated first draft — review and edit below, then approve. Nothing reaches the client without your approval.</p>
+    <form method="post" action="/portal/admin/fix/{{ fix.id }}/approve-draft">
+      <p><label><b>Edit draft</b><br>
+      <textarea name="draft_text" rows="14" style="width:100%">{{ fix.ai_draft }}</textarea></label></p>
+      <p><label><b>What was changed</b> <span class="muted">(shown to the client)</span><br>
+      <textarea name="specialist_note" rows="3" style="width:100%"
+        placeholder="e.g. Added deviation-handling section 5.2 per DRAP GMP expectations…">{{ fix.specialist_note }}</textarea></label></p>
+      <div class="cta-row">
+        <button class="btn btn-primary" type="submit">Approve draft &amp; deliver to client</button>
+      </div>
+    </form>
+    {% elif fix.ai_draft_status == "pending" %}
+    <p class="muted">⏳ AI draft is being generated in the background — refresh this page in a minute.</p>
+    {% elif fix.ai_draft_status == "skipped" %}
+    <p class="muted">No AI key configured — manual flow. Prepare the fix yourself and upload it below.</p>
+    <form method="post" action="/portal/admin/fix/{{ fix.id }}/regenerate" style="display:inline">
+      <button class="btn btn-ghost btn-small" type="submit">Try AI draft</button>
+    </form>
+    {% else %}
+    <p class="muted">⚠️ AI draft failed{% if fix.ai_draft_error %}: {{ fix.ai_draft_error }}{% endif %}. You can retry or fix manually below.</p>
+    <form method="post" action="/portal/admin/fix/{{ fix.id }}/regenerate" style="display:inline">
+      <button class="btn btn-ghost btn-small" type="submit">Regenerate draft</button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>Complete the fix manually</h2>
+    <p class="muted">Upload the corrected document you prepared. It becomes available for the client to download.</p>
+    <form method="post" action="/portal/admin/fix/{{ fix.id }}/complete" enctype="multipart/form-data">
+      <p><label><b>Corrected document *</b> <span class="muted">(PDF, DOCX, DOC, TXT — max 15 MB)</span><br>
+      <input type="file" name="file" accept=".pdf,.docx,.doc,.txt" required></label></p>
+      <p><label><b>What was changed</b> <span class="muted">(shown to the client)</span><br>
+      <textarea name="specialist_note" rows="4" style="width:100%"
+        placeholder="e.g. Added deviation-handling section 5.2 per DRAP GMP expectations; corrected document control header…">{{ fix.specialist_note }}</textarea></label></p>
+      <div class="cta-row">
+        <button class="btn btn-primary" type="submit">Deliver corrected document</button>
+        <a class="btn btn-ghost" href="/portal/admin/fixes">Back to queue</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

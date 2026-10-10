@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}QMS Dashboard — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg QMS Lite</p>
+  <h1>Quality Dashboard</h1>
+  <p class="lead muted" style="font-size:1rem">Your quality system at a glance — open items that need attention, and a tamper-evident trail of everything that happened.</p>
+  {% include "_qms_nav.html" %}
+  <div class="cards">
+    <div class="card"><p class="card-title">📄 {{ kpis.docs_effective }} effective docs</p><p class="muted">{{ kpis.docs_review }} in review</p></div>
+    <div class="card"><p class="card-title">⚠️ {{ kpis.dev_open }} open deviations</p><p class="muted">need investigation / closure</p></div>
+    <div class="card"><p class="card-title">🔧 {{ kpis.capa_open }} open CAPAs</p><p class="muted">actions in progress</p></div>
+    <div class="card"><p class="card-title">🔀 {{ kpis.chg_open }} open changes</p><p class="muted">in change control</p></div>
+    <div class="card"><p class="card-title">🎓 {{ kpis.tr_pending }} trainings pending</p><p class="muted">assigned, not completed</p></div>
+  </div>
+  <h2 style="margin-top:26px">Recent activity <span class="muted" style="font-weight:400;font-size:13px">(tamper-evident audit trail)</span></h2>
+  {% if trail %}
+  <table class="def-table">
+    <tr><th>Time</th><th>User</th><th>Action</th><th>Entity</th><th>Details</th></tr>
+    {% for t in trail %}
+    <tr><td>{{ t.ts[:16].replace("T"," ") }}</td><td>{{ t.user }}</td><td>{{ t.action }}</td><td>{{ t.entity }} {{ t.entity_id }}</td><td>{{ t.details }}</td></tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">No activity yet. Create a document, raise a deviation, or assign training to begin.</p>
+  {% endif %}
+</div>
+{% endblock %}

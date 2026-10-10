@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ dev.title }} — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">PharmaReg QMS Lite · Deviation</p>
+  <h1>{{ dev.title }}</h1>
+  {% include "_qms_nav.html" %}
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <div class="card">
+    <p><b>Status:</b> {{ dev.status }} · <b>Severity:</b> <span class="sev sev-{{ dev.severity }}">{{ dev.severity }}</span> · <b>Dept:</b> {{ dev.department or "—" }} · <b>Detected:</b> {{ dev.detected }} · <b>Raised by:</b> {{ dev.raised_by }}</p>
+    <p><b>Description:</b><br>{{ dev.description }}</p>
+    {% if dev.investigation %}<p><b>Investigation:</b><br>{{ dev.investigation }}</p>{% endif %}
+    {% if dev.root_cause %}<p><b>Root cause:</b><br>{{ dev.root_cause }}</p>{% endif %}
+    {% if dev.closure_note %}<p><b>Closure note:</b><br>{{ dev.closure_note }}</p>{% endif %}
+    {% if capa %}<p><b>Linked CAPA:</b> <a href="/portal/qms/capas/{{ capa.id }}">{{ capa.title }}</a> ({{ capa.status }})</p>{% endif %}
+  </div>
+  {% if dev.status == "open" %}
+  <div class="card" style="margin-top:16px">
+    <p class="card-title">Record investigation</p>
+    <form class="form" method="post" action="/portal/qms/deviations/{{ dev.id }}/investigate">
+      <label>Investigation<textarea name="investigation" rows="3" maxlength="3000" style="width:100%"></textarea></label>
+      <label>Root cause<input name="root_cause" maxlength="1000" style="width:100%"></label>
+      <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Save investigation</button></div>
+    </form>
+  </div>
+  {% endif %}
+  {% if dev.status == "investigating" %}
+  <div class="card" style="margin-top:16px">
+    <p class="card-title">Next steps</p>
+    <div class="cta-row">
+      {% if not capa %}
+      <form method="post" action="/portal/qms/capas/new">
+        <input type="hidden" name="title" value="CAPA for: {{ dev.title }}">
+        <input type="hidden" name="description" value="Root cause: {{ dev.root_cause }}">
+        <input type="hidden" name="source" value="deviation">
+        <input type="hidden" name="source_ref" value="{{ dev.id }}">
+        <button class="btn btn-primary btn-small" type="submit">Create linked CAPA</button>
+      </form>
+      {% endif %}
+      <form method="post" action="/portal/qms/deviations/{{ dev.id }}/close" style="display:flex;gap:8px;align-items:center">
+        <input name="closure_note" placeholder="Closure note" maxlength="1000" style="padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+        <input type="password" name="password" placeholder="Password (e-sign)" required style="padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+        <button class="btn btn-ghost btn-small" type="submit">Close deviation</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

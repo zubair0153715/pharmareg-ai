@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Documents — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg QMS Lite</p>
+  <h1>📄 Controlled Documents</h1>
+  <p class="lead muted" style="font-size:1rem">Your GMP documents with version control and e-signatures. Tap any document to open it — then follow the 3 steps: <b>Draft → In review → Effective</b>.</p>
+  {% include "_qms_nav.html" %}
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <div class="card">
+    <p class="card-title">➕ Upload new document</p>
+    <p class="muted small">Attach the file (PDF/DOC, max 15 MB). It starts as a <b>draft</b> — you can send it for review once the file is attached.</p>
+    <form class="form" method="post" action="/portal/qms/docs/new" enctype="multipart/form-data" style="margin-top:12px">
+      <div class="form-row">
+        <label>Title *<input name="title" required maxlength="160" placeholder="e.g. SOP-014 Cleaning Validation"></label>
+        <label>Type<select name="dtype"><option>SOP</option><option>Policy</option><option>Form</option><option>Record</option><option>Manual</option><option>Other</option></select></label>
+      </div>
+      <div class="form-row">
+        <label>File (PDF/DOC, max 15 MB)<input type="file" name="file"></label>
+        <label>Version note<input name="note" maxlength="300" placeholder="e.g. Initial version"></label>
+      </div>
+      <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Create draft</button></div>
+    </form>
+  </div>
+  <h2 style="margin-top:28px">My documents</h2>
+  {% for d in docs %}
+  <div class="doc-row" onclick="window.location='/portal/qms/docs/{{ d.id }}'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location='/portal/qms/docs/{{ d.id }}'">
+    <div class="doc-main">
+      <p class="doc-title">{{ d.title }}</p>
+      <p class="muted small">{{ d.type }} · v{{ d.current_v }} · updated {{ d.updated[:10] }}</p>
+    </div>
+    <span class="sev sev-{% if d.status=='effective' %}minor{% elif d.status=='in_review' %}major{% elif d.status=='obsolete' %}critical{% else %}minor{% endif %}">{{ d.status.replace("_"," ") }}</span>
+    <span class="doc-arrow">›</span>
+  </div>
+  {% else %}
+  <div class="card"><p class="muted">No documents yet. Upload your first SOP, policy or form above — it takes less than a minute.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What do you need from us to start?",
+     "acceptedAnswer": {"@type": "Answer", "text": "One document: a product label, patient leaflet, or dossier section as PDF or Word, plus the target market (e.g. Saudi SFDA, UAE, US FDA). Start with the free 2-page sample audit."}},
+    {"@type": "Question", "name": "Is the sample audit really free?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Yes. A 2-page audit of one document section, delivered in 48 hours with a deficiency list included."}},
+    {"@type": "Question", "name": "Which markets do you cover?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Saudi SFDA and UAE EDE (GCC), US FDA labeling (21 CFR Part 201, PLR format), UK MHRA labeling and PIL requirements, and WHO cGMP documentation expectations."}},
+    {"@type": "Question", "name": "Is this a substitute for our regulatory counsel?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. PharmaReg AI is an advisory review. The manufacturer retains full responsibility for final submissions."}},
+    {"@type": "Question", "name": "How much does a full audit cost?",
+     "acceptedAnswer": {"@type": "Answer", "text": "A single dossier, label set or leaflet audit costs USD 800-1,200 with a corrected submission-ready draft and one revision round. Quarterly retainers are USD 3,000-5,000 per quarter."}},
+    {"@type": "Question", "name": "What does it cost in AED or SAR?",
+     "acceptedAnswer": {"@type": "Answer", "text": "A single audit is about AED 2,900-4,400 / SAR 3,000-4,500; the quarterly retainer is USD 3,000-5,000. The exact quote is confirmed before work begins."}},
+    {"@type": "Question", "name": "How fast is the turnaround?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Free sample audits: 48 hours. Single audits: 3-5 business days. Retainer clients get priority 48-hour turnaround."}},
+    {"@type": "Question", "name": "Is our document kept confidential?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every report carries a confidentiality note and documents are transferred over a secure channel."}},
+    {"@type": "Question", "name": "What file formats do you accept?",
+     "acceptedAnswer": {"@type": "Answer", "text": "PDF or Word — one product label, patient leaflet, or dossier section to start."}}
+  ]
+}
+</script>
+{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <p class="kicker">AI-assisted regulatory audits · GCC · US · UK</p>
+      <h1>Get your dossier past the reviewer <em>the first time.</em></h1>
+      <p class="lead">PharmaReg AI reviews your draft dossiers, product labels and patient leaflets against Saudi SFDA, UAE EDE, FDA and MHRA requirements — and returns a deficiency report plus a corrected, submission-ready draft in days, not weeks.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="/request-audit">Get a free 2-page sample audit</a>
+        <a class="btn btn-ghost" href="/#how">How it works</a>
+      </div>
+      <p class="hero-note">No commitment. We audit <strong>your own document</strong> — you judge the value yourself.</p>
+    </div>
+    <div class="hero-card">
+      <p class="card-title">A typical finding we catch</p>
+      <div class="finding">
+        <p class="finding-before"><span class="tag tag-before">Before</span> "Store at room temperature."</p>
+        <p class="finding-after"><span class="tag tag-after">After</span> "Store at 25&nbsp;°C&nbsp;±&nbsp;2&nbsp;°C / 60%&nbsp;±&nbsp;5% RH. Excursions permitted to 15–30&nbsp;°C. Do not freeze."</p>
+      </div>
+      <p class="muted small">Vague storage claims draw reviewer queries. We cite the exact rule — never a vague "non-compliant".</p>
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap strip-inner">
+    <span>Audited against</span>
+    <strong>Saudi SFDA</strong><strong>UAE EDE</strong><strong>US FDA 21 CFR</strong><strong>UK MHRA</strong><strong>WHO cGMP</strong>
+  </div>
+</section>
+
+<section class="section" id="problem">
+  <div class="wrap narrow">
+    <h2>Small defects cost months of revenue</h2>
+    <p>Every registration dossier that comes back with reviewer queries — a storage claim missing explicit stability bounds, a boxed warning not carried over from the reference product, unharmonized excipient warnings, a Patient Information Leaflet that fails readability expectations — postpones approvals and market launches by weeks or months.</p>
+    <p>Traditional regulatory consultants are slow and expensive. Internal reviews are manual and inconsistent. <strong>PharmaReg AI sits in between:</strong> AI-assisted speed with a Pharm-D's regulatory judgment on every report.</p>
+  </div>
+</section>
+
+<section class="section alt" id="how">
+  <div class="wrap">
+    <h2 class="center">How it works</h2>
+    <div class="steps">
+      <div class="step"><span class="step-n">1</span><h3>Send one document</h3><p>A product label, patient leaflet, or one dossier section — PDF or Word. Start with the <strong>free</strong> 2-page sample audit.</p></div>
+      <div class="step"><span class="step-n">2</span><h3>We audit it in 48 hours</h3><p>Line-by-line review against the frameworks for your target market, with every finding tied to a specific rule or guidance.</p></div>
+      <div class="step"><span class="step-n">3</span><h3>You get deficiencies + fixes</h3><p>A deficiency table with severity ratings, plus corrected wording for the top findings — not just problems, solutions.</p></div>
+      <div class="step"><span class="step-n">4</span><h3>Scale to full audits</h3><p>Move to single audits or a quarterly retainer: full dossier reviews, submission-ready drafts, priority turnaround.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <h2 class="center">What we audit</h2>
+    <div class="cards">
+      <div class="card"><h3>Registration dossiers</h3><p>Full dossier and dossier-section reviews for SFDA / EDE filings, ANDA readiness checks for FDA submissions.</p></div>
+      <div class="card"><h3>Product labels</h3><p>Label sets checked against reference/originator labeling, PLR format (21 CFR 201.56/201.57), excipient and warning declarations.</p></div>
+      <div class="card"><h3>Patient leaflets</h3><p>Patient Information Leaflets and package inserts reviewed for readability, user-testing expectations and market-specific requirements.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="pricing">
+  <div class="wrap">
+    <h2 class="center">Pricing</h2>
+    <p class="center muted">Fixed quotes upfront. No hourly billing, no surprises.</p>
+    <div class="pricing">
+      <div class="price-card">
+        <h3>Sample Audit</h3>
+        <p class="price">Free</p>
+        <ul>
+          <li>2-page audit of one label, leaflet or dossier section</li>
+          <li>Deficiency list with rule citations</li>
+          <li>Delivered in 48 hours</li>
+          <li>Prove the value on your own document</li>
+        </ul>
+        <a class="btn btn-ghost" href="/request-audit">Request free audit</a>
+      </div>
+      <div class="price-card featured">
+        <p class="flag">Most popular</p>
+        <h3>Single Audit</h3>
+        <p class="price">$800–1,200</p>
+        <ul>
+          <li>Full audit of one dossier, label set or leaflet</li>
+          <li>Deficiency report + corrected submission-ready draft</li>
+          <li>Cross-check against reference labeling</li>
+          <li>One revision round included</li>
+          <li>3–5 business day turnaround</li>
+        </ul>
+        <a class="btn btn-primary" href="/request-audit">Request an audit</a>
+      </div>
+      <div class="price-card">
+        <h3>Quarterly Retainer</h3>
+        <p class="price">$3,000–5,000<span class="per">/quarter</span></p>
+        <ul>
+          <li>Up to 4 audits per quarter</li>
+          <li>Priority 48-hour turnaround</li>
+          <li>Quarterly regulatory-update briefing</li>
+          <li>Direct line to your audit team</li>
+        </ul>
+        <a class="btn btn-ghost" href="/request-audit">Talk to us</a>
+      </div>
+    </div>
+    <p class="center muted small">Indicative FX: 1 USD ≈ 3.67 AED ≈ 3.75 SAR ≈ 0.79 GBP. Final quote confirmed before work begins.</p>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="wrap narrow">
+    <h2>Why a Pharm-D, not a generic AI agency</h2>
+    <p>Regulated industries buy from people who speak their language. PharmaReg AI was founded by <strong>Zubair Ahmed, Pharm-D</strong> — every audit combines AI-assisted review speed with real pharmaceutical regulatory judgment. Generic AI agencies cannot credibly audit a pharmaceutical dossier. We do nothing else.</p>
+    <div class="center"><a class="btn btn-primary" href="/request-audit">Start with a free sample audit</a></div>
+  </div>
+</section>
+
+<section class="section" id="resources">
+  <div class="wrap narrow">
+    <h2 class="center">Regulatory guides</h2>
+    <div class="card">
+      <p class="kicker">Guide</p>
+      <h3 style="margin-top:4px">7 labeling deficiencies that delay SFDA &amp; EDE approvals</h3>
+      <p class="muted">The seven repeat defects behind most reviewer queries on Gulf submissions — what reviewers flag, why it matters, and the exact fix for each.</p>
+      <a class="btn btn-ghost" href="/guides/labeling-deficiencies">Read the guide</a>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="faq">
+  <div class="wrap narrow">
+    <h2 class="center">Questions</h2>
+    <div class="faq">
+      <details><summary>What do you need from us to start?</summary><p>One document: a product label, patient leaflet, or dossier section as PDF or Word. Tell us the target market (e.g. Saudi SFDA, UAE, US FDA). That's it.</p></details>
+      <details><summary>Is the sample audit really free?</summary><p>Yes. A 2-page audit of one document section, delivered in 48 hours, deficiency list included. It's how we prove the value — on your own document, not a sales deck.</p></details>
+      <details><summary>Which markets do you cover?</summary><p>Saudi SFDA and UAE EDE (GCC), US FDA labeling (21 CFR Part 201, PLR format), UK MHRA labeling and PIL requirements, and WHO cGMP documentation expectations.</p></details>
+      <details><summary>Is this a substitute for our regulatory counsel?</summary><p>No. PharmaReg AI is an advisory review. Your company retains full responsibility for final submissions — we make those submissions far less likely to bounce back.</p></details>
+      <details><summary>How do we send documents securely?</summary><p>Request an audit and we'll arrange a secure transfer channel. Every report carries a confidentiality note.</p></details>
+      <details><summary>What does it cost in AED or SAR?</summary><p>A single audit is $800–1,200 (about AED 2,900–4,400 / SAR 3,000–4,500); the quarterly retainer is $3,000–5,000. The exact quote is confirmed before any work begins.</p></details>
+      <details><summary>How fast is the turnaround?</summary><p>Free sample audits: 48 hours. Single audits: 3–5 business days. Retainer clients get priority 48-hour turnaround on every audit.</p></details>
+      <details><summary>Is our document kept confidential?</summary><p>Yes. Every report carries a confidentiality note, documents are transferred over a secure channel, and your data is never used for any other purpose.</p></details>
+      <details><summary>What file formats do you accept?</summary><p>PDF or Word — one product label, patient leaflet, or dossier section to start.</p></details>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

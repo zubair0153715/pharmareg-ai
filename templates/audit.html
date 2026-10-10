@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title or "Free DRAP GMP Self-Audit" }} — PharmaReg AI{% endblock %}
+{% block head_extra %}
+<style>
+.audit-q { border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; margin:10px 0; background:#fff; }
+.audit-q p { margin:0 0 8px; font-weight:600; }
+.sev { font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:.5px; }
+.sev-critical { background:#fee2e2; color:#b91c1c; }
+.sev-major { background:#fef3c7; color:#b45309; }
+.sev-minor { background:#e0f2fe; color:#0369a1; }
+.opts { display:flex; gap:14px; flex-wrap:wrap; }
+.opts label { display:flex; align-items:center; gap:6px; font-weight:500; cursor:pointer; }
+.opts input { width:18px; height:18px; accent-color:#0d6efd; }
+.domain-head { margin:34px 0 6px; }
+.domain-head h3 { margin:0; }
+#progress { position:sticky; top:0; background:#0d6efd; color:#fff; padding:10px 16px; border-radius:10px; margin:18px 0; font-weight:600; z-index:5; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">{{ page_kicker or "Free self-assessment · ~10 minutes" }}</p>
+  <h1>{{ page_title or "DRAP GMP Self-Audit" }}</h1>
+  <p class="lead">{{ page_lead or "Answer 48 questions across 10 WHO-GMP domains. You get an instant scored report with prioritized findings and corrective actions — free. Your answers stay confidential." }}</p>
+  {% if not framework %}
+  <div class="card">
+    <p class="card-title">Need Saudi (SFDA) or UAE (EDE) coverage?</p>
+    <p class="muted">The <a href="/portal">PharmaReg Audit Cloud</a> adds SFDA and EDE frameworks, saved audit history, and shareable reports. Free plan available.</p>
+  </div>
+  {% endif %}
+  <div class="card">
+    <p class="card-title">How it works</p>
+    <p class="muted">1. Fill in your facility details → 2. Answer honestly (Yes / Partial / No / N/A) → 3. Get your scored gap report instantly{% if framework %} — saved to your dashboard{% else %} → 4. Discuss a full professional audit on WhatsApp if you want one{% endif %}.</p>
+  </div>
+
+  <form class="form" method="post" action="{{ form_action or '/audit/report' }}" id="audit-form">
+    {% if framework %}<input type="hidden" name="framework" value="{{ framework }}">{% endif %}
+    <h2 class="domain-head">Facility details</h2>
+    <div class="form-row">
+      <label>Company name *<input name="company" required maxlength="120"></label>
+      <label>Contact person<input name="contact" maxlength="120"></label>
+    </div>
+    <div class="form-row">
+      <label>Email<input type="email" name="email" maxlength="120"></label>
+      <label>Phone / WhatsApp<input name="phone" maxlength="40"></label>
+    </div>
+    <div class="form-row">
+      <label>Facility type
+        <select name="facility_type">
+          <option>Finished dosage manufacturing</option>
+          <option>API / bulk manufacturing</option>
+          <option>Contract manufacturing</option>
+          <option>Packaging only</option>
+          <option>Other</option>
+        </select>
+      </label>
+      <label>City<input name="city" maxlength="80"></label>
+    </div>
+
+    <div id="progress">Answered 0 / {{ total }}</div>
+
+    {% for did, dname, ddesc in domains %}
+    <div class="domain-head">
+      <h3>{{ loop.index }}. {{ dname }}</h3>
+      <p class="muted">{{ ddesc }}</p>
+    </div>
+    {% for q in questions_by_domain[did] %}
+    <div class="audit-q" data-qid="{{ q[0] }}">
+      <p><span class="sev sev-{{ q[2] }}">{{ q[2] }}</span> &nbsp;{{ q[3] }}</p>
+      <div class="opts">
+        <label><input type="radio" name="q_{{ q[0] }}" value="yes"> Yes</label>
+        <label><input type="radio" name="q_{{ q[0] }}" value="partial"> Partial</label>
+        <label><input type="radio" name="q_{{ q[0] }}" value="no"> No</label>
+        <label><input type="radio" name="q_{{ q[0] }}" value="na"> N/A</label>
+      </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+
+    <div class="cta-row" style="margin:26px 0">
+      <button class="btn btn-primary btn-block" type="submit">Generate my audit report</button>
+    </div>
+    <p class="muted">This is a self-assessment based on your answers — not a regulatory inspection and not legal advice. A full professional audit verifies everything on-site with document review.</p>
+  </form>
+</div>
+<script>
+(function(){
+  var total = {{ total }};
+  var bar = document.getElementById('progress');
+  function update(){
+    var answered = 0;
+    document.querySelectorAll('.audit-q').forEach(function(q){
+      if(q.querySelector('input:checked')) answered++;
+    });
+    bar.textContent = 'Answered ' + answered + ' / ' + total;
+  }
+  document.querySelectorAll('.audit-q input').forEach(function(i){
+    i.addEventListener('change', update);
+  });
+  document.getElementById('audit-form').addEventListener('submit', function(e){
+    var missing = [];
+    document.querySelectorAll('.audit-q').forEach(function(q){
+      if(!q.querySelector('input:checked')) missing.push(q);
+    });
+    if(missing.length){
+      e.preventDefault();
+      missing[0].scrollIntoView({behavior:'smooth', block:'center'});
+      alert('Please answer all questions (' + missing.length + ' remaining).');
+    }
+  });
+  update();
+})();
+</script>
+{% endblock %}

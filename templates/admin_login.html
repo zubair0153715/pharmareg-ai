@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Admin login — PharmaReg AI{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <h1>Admin login</h1>
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <form class="form" method="post" action="/portal/admin/login">
+    <label>Admin key<input type="password" name="key" required></label>
+    <div class="cta-row"><button class="btn btn-primary" type="submit">Log in</button></div>
+  </form>
+</div>
+{% endblock %}

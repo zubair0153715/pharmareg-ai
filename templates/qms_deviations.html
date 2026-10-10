@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Deviations — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg QMS Lite</p>
+  <h1>⚠️ Deviations</h1>
+  <p class="lead muted" style="font-size:1rem">Something didn't go as planned? Raise a deviation, investigate the root cause, and link the CAPA that fixes it — everything stays traceable for your next inspection.</p>
+  {% include "_qms_nav.html" %}
+  <div class="card">
+    <p class="card-title">Raise deviation</p>
+    <form class="form" method="post" action="/portal/qms/deviations/new">
+      <div class="form-row">
+        <label>Title *<input name="title" required maxlength="160"></label>
+        <label>Department<input name="department" maxlength="80" placeholder="e.g. Production, QC"></label>
+      </div>
+      <div class="form-row">
+        <label>Severity<select name="severity"><option>minor</option><option>major</option><option>critical</option></select></label>
+        <label>Detected on<input type="date" name="detected"></label>
+      </div>
+      <label>Description *<textarea name="description" rows="3" required maxlength="2000" style="width:100%"></textarea></label>
+      <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Raise deviation</button></div>
+    </form>
+  </div>
+  <table class="def-table" style="margin-top:18px">
+    <tr><th>Title</th><th>Dept</th><th>Severity</th><th>Status</th><th>Raised</th><th></th></tr>
+    {% for d in devs %}
+    <tr>
+      <td>{{ d.title }}</td><td>{{ d.department or "—" }}</td>
+      <td><span class="sev sev-{{ d.severity }}">{{ d.severity }}</span></td>
+      <td>{{ d.status }}</td><td>{{ d.created[:10] }}</td>
+      <td><a href="/portal/qms/deviations/{{ d.id }}">Open</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="muted">No deviations.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

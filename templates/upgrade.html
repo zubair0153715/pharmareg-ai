@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Upgrade — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker center">PharmaReg Audit Cloud · Plans</p>
+  <h1 class="center">Choose the plan that fits your facility</h1>
+  <p class="lead muted center" style="margin:0 auto 8px">Start free. Upgrade when you need unlimited audits, shareable reports, or the full QMS. No card required — ever.</p>
+
+  <div class="pricing" style="margin-top:36px">
+    <div class="price-card">
+      <p class="card-title">Free</p>
+      <p class="price">$0<span class="per">/forever</span></p>
+      <p class="muted small">Try the full audit experience on your own facility.</p>
+      <div class="cta-row"><a class="btn btn-ghost btn-small btn-block" href="/portal/dashboard">Current plan</a></div>
+    </div>
+    <div class="price-card featured">
+      <p class="flag">Most popular</p>
+      <p class="card-title">Professional</p>
+      <p class="price">$49<span class="per">/month</span></p>
+      <p class="muted small">For QA teams running audits continuously.</p>
+      <div class="cta-row"><a class="btn btn-primary btn-small btn-block" href="{{ wa_link }}" target="_blank" rel="noopener">💬 Upgrade via WhatsApp</a></div>
+      <div class="cta-row" style="margin-top:8px"><button class="btn btn-ghost btn-small btn-block" type="button" onclick="paddleCheckout('pro')">💳 Pay online with Paddle</button></div>
+    </div>
+    <div class="price-card">
+      <p class="card-title">Enterprise</p>
+      <p class="price">$199<span class="per">/month</span></p>
+      <p class="muted small">For groups with multiple facilities &amp; teams.</p>
+      <div class="cta-row"><a class="btn btn-ghost btn-small btn-block" href="{{ wa_link }}" target="_blank" rel="noopener">💬 Talk to us</a></div>
+      <div class="cta-row" style="margin-top:8px"><button class="btn btn-ghost btn-small btn-block" type="button" onclick="paddleCheckout('enterprise')">💳 Pay online with Paddle</button></div>
+    </div>
+  </div>
+
+  <!-- Paddle.js drop-in point: when PADDLE_CLIENT_TOKEN is set in env, the
+       upgrade route flips data-enabled="1" and this script loads Paddle.js.
+       Until then paddleCheckout() shows the "coming soon" placeholder and
+       the WhatsApp manual flow stays primary. -->
+  <div id="paddleCfg" style="display:none"
+       data-enabled="{{ '1' if paddle.enabled else '0' }}"
+       data-pro-price="{{ paddle.pro_price_id }}"
+       data-ent-price="{{ paddle.ent_price_id }}"
+       data-client-token="{{ paddle.client_token }}"
+       data-user-id="{{ paddle.user_id }}"></div>
+  <script>
+  (function(){
+    var cfg=document.getElementById('paddleCfg');
+    if(cfg&&cfg.dataset.enabled==='1'&&cfg.dataset.clientToken){
+      var s=document.createElement('script');
+      s.src='https://cdn.paddle.com/paddle/v2/paddle.js';
+      s.onload=function(){ if(window.Paddle){ try{ if(cfg.dataset.clientToken.indexOf('test_')===0&&Paddle.Environment){ Paddle.Environment.set('sandbox'); } }catch(e){} Paddle.Initialize({token:cfg.dataset.clientToken}); } };
+      document.head.appendChild(s);
+    }
+  })();
+  function paddleCheckout(plan){
+    var cfg=document.getElementById('paddleCfg');
+    var ready=cfg&&cfg.dataset.enabled==='1'&&(typeof Paddle!=='undefined');
+    if(!ready){
+      alert('Online checkout is opening soon — please use "Upgrade via WhatsApp" and we will activate your plan the same day.');
+      return;
+    }
+    var priceId=plan==='pro'?cfg.dataset.proPrice:cfg.dataset.entPrice;
+    Paddle.Checkout.open({
+      items:[{priceId:priceId,quantity:1}],
+      customData:{user_id:cfg.dataset.userId}
+    });
+  }
+  </script>
+
+  <h2 class="center" style="margin-top:44px">Compare plans</h2>
+  <div class="compare-wrap">
+  <table class="compare">
+    <tr><th></th><th>Free</th><th class="hl">Professional</th><th>Enterprise</th></tr>
+    <tr><td>GMP self-audits (DRAP 🇵🇰 · SFDA 🇸🇦 · EDE 🇦🇪)</td><td>3 total</td><td class="hl">Unlimited</td><td class="hl">Unlimited</td></tr>
+    <tr><td>Scored gap report with findings &amp; corrective actions</td><td><span class="y">✓</span></td><td class="hl"><span class="y">✓</span></td><td><span class="y">✓</span></td></tr>
+    <tr><td>Shareable report links (no login needed)</td><td><span class="n">—</span></td><td class="hl"><span class="y">✓</span></td><td><span class="y">✓</span></td></tr>
+    <tr><td>QMS Lite — document control with e-signatures</td><td><span class="n">—</span></td><td class="hl"><span class="y">✓</span></td><td><span class="y">✓</span></td></tr>
+    <tr><td>QMS Lite — deviations, CAPA, change control, training</td><td><span class="n">—</span></td><td class="hl"><span class="y">✓</span></td><td><span class="y">✓</span></td></tr>
+    <tr><td>Document fixes (AI draft + specialist review)</td><td>1 free</td><td class="hl">Unlimited</td><td>Unlimited</td></tr>
+    <tr><td>Team seats</td><td>1</td><td class="hl">1</td><td>5</td></tr>
+    <tr><td>Multi-facility tracking</td><td><span class="n">—</span></td><td class="hl"><span class="n">—</span></td><td><span class="y">✓</span></td></tr>
+    <tr><td>Support</td><td>Community</td><td class="hl">Priority WhatsApp</td><td>Dedicated</td></tr>
+  </table>
+  </div>
+
+  <div class="card" style="margin-top:32px">
+    <p class="card-title">💳 How manual billing works</p>
+    <div class="how-steps" style="margin:16px 0">
+      <div class="how-step"><span class="how-n">1</span><p>Tap <b>Upgrade via WhatsApp</b></p></div>
+      <div class="how-step"><span class="how-n">2</span><p>We send <b>bank transfer</b> details</p></div>
+      <div class="how-step"><span class="how-n">3</span><p>Plan <b>activated the same day</b></p></div>
+    </div>
+    <p class="muted small">No card, no auto-charge, no hidden fees. Cancel anytime by messaging us on WhatsApp. Online card checkout via Paddle is opening soon.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{{ wa_link }}" target="_blank" rel="noopener">💬 Upgrade via WhatsApp</a>
+      <a class="btn btn-ghost" href="/portal/dashboard">← Back to dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

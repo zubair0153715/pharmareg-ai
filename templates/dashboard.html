@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg Audit Cloud</p>
+  <div class="dash-head">
+    <h1>Assalam-o-Alaikum, {{ user.name }}</h1>
+    <div class="plan-row">
+      <span class="plan-badge plan-{{ 'free' if plan.monthly == 0 else 'paid' }}">{{ plan.name | upper }} PLAN</span>
+      {% if plan.monthly == 0 %}<a class="btn btn-primary btn-small" href="/portal/upgrade">⬆ Upgrade</a>{% endif %}
+    </div>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <p class="card-title">📊 My audits</p>
+      {% if plan.audit_limit is not none %}
+      <p class="quota"><b>{{ audits|length }} of {{ plan.audit_limit }}</b> audits used</p>
+      <div class="quota-bar"><div class="quota-fill" style="width:{{ (audits|length / plan.audit_limit * 100) | round(0) | int }}%"></div></div>
+      <p class="muted small">Free plan includes 3 audits across all frameworks. Need more? <a href="/portal/upgrade">Upgrade to Professional</a> for unlimited audits.</p>
+      {% else %}
+      <p class="quota"><b>{{ audits|length }}</b> audits · unlimited</p>
+      <p class="muted small">Professional plan — run as many audits as you need, across all facilities.</p>
+      {% endif %}
+      <div class="cta-row">
+        <a class="btn btn-primary btn-small" href="/portal/audit/new">+ New audit</a>
+      </div>
+    </div>
+    <div class="card">
+      <p class="card-title">📝 Document fixes</p>
+      <p class="muted">Upload a faulty document from any audit finding — get an AI-assisted corrected draft, reviewed by our regulatory specialist before you download. Your first fix is free.</p>
+      <div class="cta-row"><a class="btn btn-primary btn-small" href="/portal/remediation">Request a fix</a></div>
+    </div>
+    <div class="card">
+      <p class="card-title">🏭 QMS Lite</p>
+      {% if plan.monthly > 0 %}
+      <p class="muted">Versioned document control with e-signatures, deviation investigation, CAPA, change control, training records &amp; a tamper-evident audit trail.</p>
+      <div class="cta-row"><a class="btn btn-primary btn-small" href="/portal/qms">Open QMS</a></div>
+      {% else %}
+      <p class="muted">Document control, deviations, CAPA, change control &amp; training — available on the <b>Professional</b> plan.</p>
+      <div class="cta-row"><a class="btn btn-ghost btn-small" href="/portal/upgrade">Upgrade for QMS</a></div>
+      {% endif %}
+    </div>
+    <div class="card">
+      <p class="card-title">👤 Account</p>
+      <p class="muted">{{ user.email }}<br>{{ user.company or "—" }}</p>
+      <p><a href="/portal/logout">Log out</a></p>
+    </div>
+  </div>
+
+  <h2 style="margin-top:30px">Audit history</h2>
+  {% if audits %}
+  <table class="def-table">
+    <tr><th>Date</th><th>Framework</th><th>Facility</th><th>Score</th><th>Grade</th><th>Findings</th><th></th></tr>
+    {% for a in audits %}
+    <tr>
+      <td>{{ a.ts[:10] }}</td>
+      <td>{{ a.report.framework_meta.flag }} {{ a.report.framework_meta.name }}</td>
+      <td>{{ a.company.company or "—" }}</td>
+      <td><b>{{ a.report.overall }}%</b></td>
+      <td>{{ a.report.grade_label }}</td>
+      <td>{{ a.report.counts.critical }}C / {{ a.report.counts.major }}M / {{ a.report.counts.minor }}m</td>
+      <td><a href="/portal/audit/{{ a.id }}">View</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <div class="card"><p class="muted">No audits yet. Run your first <b>DRAP 🇵🇰</b>, <b>SFDA 🇸🇦</b>, or <b>EDE 🇦🇪</b> self-audit — answer ~50 questions (about 10 minutes) and get a scored gap report with corrective actions.</p>
+  <div class="cta-row"><a class="btn btn-primary btn-small" href="/portal/audit/new">+ New audit</a></div></div>
+  {% endif %}
+</div>
+{% endblock %}

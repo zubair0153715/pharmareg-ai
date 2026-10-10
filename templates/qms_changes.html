@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Change control — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap">
+  <p class="kicker">PharmaReg QMS Lite</p>
+  <h1>🔀 Change Control</h1>
+  <p class="lead muted" style="font-size:1rem">Planned changes to equipment, processes, or documents go through here first — assess the impact, approve, and implement in a controlled way.</p>
+  {% include "_qms_nav.html" %}
+  <div class="card">
+    <p class="card-title">Request change</p>
+    <form class="form" method="post" action="/portal/qms/changes/new">
+      <div class="form-row">
+        <label>Title *<input name="title" required maxlength="160"></label>
+        <label>Type<select name="ctype"><option value="process">Process</option><option value="equipment">Equipment</option><option value="document">Document</option><option value="supplier">Supplier</option><option value="facility">Facility</option><option value="other">Other</option></select></label>
+      </div>
+      <label>Description *<textarea name="description" rows="3" required maxlength="2000" style="width:100%"></textarea></label>
+      <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Request change</button></div>
+    </form>
+  </div>
+  <table class="def-table" style="margin-top:18px">
+    <tr><th>Title</th><th>Type</th><th>Status</th><th>Requested by</th><th></th></tr>
+    {% for c in chgs %}
+    <tr>
+      <td>{{ c.title }}</td><td>{{ c.ctype }}</td><td>{{ c.status }}</td><td>{{ c.requested_by }}</td>
+      <td><a href="/portal/qms/changes/{{ c.id }}">Open</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="muted">No changes.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

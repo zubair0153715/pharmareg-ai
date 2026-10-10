@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Gap Analysis Report {{ report_id }} — PharmaReg AI{% endblock %}
+{% block head_extra %}{% include "_report_assets.html" %}{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  {% include "_report_body.html" %}
+  <div class="card no-print" style="margin-top:26px">
+    <p class="card-title">Want these findings actually fixed?</p>
+    <p class="muted">Upload any faulty document from your findings — our AI drafts a corrected version and a regulatory specialist reviews it before delivery. <b>Your first fix is free.</b></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/portal/remediation">Get my first fix free</a>
+      <a class="btn btn-ghost" href="{{ wa_link }}" target="_blank" rel="noopener">Discuss full audit on WhatsApp</a>
+    </div>
+  </div>
+  <div class="card no-print" style="margin-top:18px">
+    <p class="card-title">Want every finding verified on-site?</p>
+    <p class="muted">A full PharmaReg AI professional audit ($800–1,200) verifies each answer against your documents and facility, and delivers a submission-ready corrective action plan in 3–5 business days. Need SFDA (Saudi) or EDE (UAE) coverage with saved history? <a href="/portal">Try the Audit Cloud</a>.</p>
+    <div class="cta-row">
+      <button class="btn btn-ghost" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

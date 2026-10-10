@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Create account — PharmaReg Audit Cloud{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">PharmaReg Audit Cloud</p>
+  <h1>Create your free account</h1>
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <form class="form" method="post" action="/portal/signup">
+    <div class="form-row">
+      <label>Full name *<input name="name" required maxlength="120"></label>
+      <label>Email *<input type="email" name="email" required maxlength="160"></label>
+    </div>
+    <div class="form-row">
+      <label>Company<input name="company" maxlength="160"></label>
+      <label>Password (min 8 chars) *<input type="password" name="password" required minlength="8"></label>
+    </div>
+    <div class="cta-row"><button class="btn btn-primary btn-block" type="submit">Create free account</button></div>
+  </form>
+  <p class="muted center">Already have an account? <a href="/portal/login">Log in</a></p>
+</div>
+{% endblock %}

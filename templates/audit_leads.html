@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Audit leads (owner) — PharmaReg AI{% endblock %}
+{% block content %}
+<div class="wrap">
+  <h1>Self-audit leads (owner only)</h1>
+  <p class="muted">{{ leads|length }} submissions. Unlisted page — do not share this URL.</p>
+  <table class="def-table">
+    <tr><th>Date</th><th>Report</th><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Type</th><th>City</th><th>Score</th><th>Grade</th><th>Findings C/M/m</th></tr>
+    {% for l in leads|reverse %}
+    <tr>
+      <td>{{ l.ts }}</td><td>{{ l.report_id }}</td><td>{{ l.company }}</td><td>{{ l.contact }}</td>
+      <td>{{ l.email }}</td><td>{{ l.phone }}</td><td>{{ l.facility_type }}</td><td>{{ l.city }}</td>
+      <td><b>{{ l.overall }}%</b></td><td>{{ l.grade }}</td><td>{{ l.critical }}/{{ l.major }}/{{ l.minor }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

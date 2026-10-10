@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ capa.title }} — QMS Lite{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <p class="kicker">PharmaReg QMS Lite · CAPA</p>
+  <h1>{{ capa.title }}</h1>
+  {% include "_qms_nav.html" %}
+  {% if error %}<div class="card" style="border-left:4px solid #dc2626"><p>{{ error }}</p></div>{% endif %}
+  <div class="card">
+    <p><b>Status:</b> {{ capa.status.replace("_"," ") }} · <b>Source:</b> {{ capa.source }}{% if capa.source_ref %} ({{ capa.source_ref }}){% endif %} · <b>Owner:</b> {{ capa.owner }} · <b>Due:</b> {{ capa.due or "—" }} · <b>Created by:</b> {{ capa.created_by }}</p>
+    {% if capa.description %}<p><b>Description:</b><br>{{ capa.description }}</p>{% endif %}
+    <h3>Actions</h3>
+    {% for a in capa.actions %}
+    <p>{% if a.done %}✅{% else %}⬜{% endif %} {{ a.text }} <span class="muted">({{ a.by }}{% if a.done %}, {{ a.done_at[:10] }}{% endif %})</span>
+      <a href="#" onclick="event.preventDefault();document.getElementById('done-{{ loop.index0 }}').submit()">{% if a.done %}reopen{% else %}done{% endif %}</a></p>
+    <form id="done-{{ loop.index0 }}" method="post" action="/portal/qms/capas/{{ capa.id }}/action/{{ loop.index0 }}/done"></form>
+    {% else %}
+    <p class="muted">No actions yet.</p>
+    {% endfor %}
+    {% if capa.status in ("open","in_progress") %}
+    <form method="post" action="/portal/qms/capas/{{ capa.id }}/action" style="display:flex;gap:8px;margin-top:10px">
+      <input name="text" required maxlength="500" placeholder="New corrective / preventive action" style="flex:1;padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+      <button class="btn btn-ghost btn-small" type="submit">Add</button>
+    </form>
+    {% endif %}
+    {% if capa.effectiveness %}<p><b>Effectiveness check:</b><br>{{ capa.effectiveness }}</p>{% endif %}
+  </div>
+  {% if capa.status == "in_progress" %}
+  <div class="card" style="margin-top:16px">
+    <p class="card-title">Record effectiveness check</p>
+    <form class="form" method="post" action="/portal/qms/capas/{{ capa.id }}/verify">
+      <label>How was effectiveness verified?<textarea name="effectiveness" rows="2" maxlength="2000" style="width:100%"></textarea></label>
+      <div class="cta-row"><button class="btn btn-primary btn-small" type="submit">Submit for closure</button></div>
+    </form>
+  </div>
+  {% endif %}
+  {% if capa.status == "pending_verification" %}
+  <div class="card" style="margin-top:16px">
+    <p class="card-title">Close CAPA (e-sign)</p>
+    <form method="post" action="/portal/qms/capas/{{ capa.id }}/close" style="display:flex;gap:8px">
+      <input type="password" name="password" placeholder="Your password (e-sign)" required style="padding:8px;border:1px solid #e5e7eb;border-radius:8px">
+      <button class="btn btn-primary btn-small" type="submit">Close CAPA</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
