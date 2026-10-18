@@ -61,6 +61,7 @@ function sendRequest(e) {
   ];
   const notes = v("f-notes");
   if (notes) lines.push("Notes: " + notes);
+  try { var src = localStorage.getItem('pra_src'); if (src) lines.push("", "Source: " + src); } catch(e) {}
   window.open("https://wa.me/{{ whatsapp_number }}?text=" + encodeURIComponent(lines.join("\n")), "_blank");
   return false;
 }

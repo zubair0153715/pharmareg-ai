@@ -100,5 +100,23 @@ if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catc
   document.addEventListener('keydown',function(e){if(e.key==='Escape') close();});
 })();
 </script>
+<a id="waFloat" href="https://wa.me/923116925020?text=Hello%20PharmaReg%20AI%2C%20I%20have%20a%20question%20about%20an%20audit." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">✆</a>
+<script>
+/* UTM capture: remember where the visitor came from, reuse in CTAs */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search), s=q.get('utm_source');
+    if(s) localStorage.setItem('pra_src', s);
+    var src=localStorage.getItem('pra_src');
+    if(src){
+      var f=document.getElementById('waFloat');
+      if(f) f.href='https://wa.me/923116925020?text='+encodeURIComponent('Hello PharmaReg AI, I have a question about an audit. (via '+src+')');
+      document.querySelectorAll('a[href="/request-audit"]').forEach(function(a){
+        if(a.href.indexOf('src=')<0) a.href='/request-audit?utm_source='+encodeURIComponent(src);
+      });
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
